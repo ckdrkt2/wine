@@ -5,12 +5,10 @@ jobs:
         runs-on: self-hosted
         container: docker://dvcorg/cml-py3:latest
         steps:
-            - uses: actions/checkout@v2
-              with:
-                access-token: ${{ secrets.self-hosted-runner }}
+            - uses: actions/checkout@v2.3.4
             - name: cml_run
-#               env:
-#                 repo_token: ${{ secrets.GITHUB_TOKEN }}
+              env:
+                repo_token: ${{ secrets.GITHUB_TOKEN }}
               run: |
               
                 # Your ML workflow goes here
