@@ -2,10 +2,16 @@ name: model-wine-quality
 on: [push]
 jobs:
     run:
-        runs-on: [self-hosted, linux, x64]
-        container: docker://dvcorg/cml-py3:latest
+        runs-on: [self-hosted]
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                node-version: '16'
+      # - uses: actions/setup-python@v2
+      #   with:
+      #     python-version: '3.x'
+            - uses: iterative/setup-cml@v1
+            - uses: actions/checkout@v3
             - name: cml_run
               env:
                 repo_token: ${{ secrets.TEST_TOKEN }}
@@ -15,10 +21,10 @@ jobs:
                 pip install -r requirements.txt
                 python train.py
               
-                echo "## MODEL METRICS" > report.md
+                echo "## MODEL METRICS " > report.md
                 cat metrics.txt >> report.md
                 
-                echo "## Data viz" >> report.md
+                echo "## Data viz " >> report.md
                 cml-publish feature_importance.png --md >> report.md
                 cml-publish residuals.png --md >> report.md
                 
